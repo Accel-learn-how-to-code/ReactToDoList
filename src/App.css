@@ -1,10 +1,18 @@
 .App {
   text-align: center;
 }
-
+.centerText{
+  text-align: center;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.badgeForm{
+  background-color: tomato;
+  color: #fff;
+  border-radius: 10px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
