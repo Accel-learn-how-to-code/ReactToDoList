@@ -29,6 +29,7 @@ class TaskForm extends Component {
       name: "",
       status: false,
     });
+    this.props.onToggleForm();
   };
 
   render() {

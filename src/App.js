@@ -26,13 +26,13 @@ class App extends Component {
 
   onSubmitTask = (data) => {
     data.id = this.generateID();
-    const {tasks} = this.state;
+    const { tasks } = this.state;
     tasks.push(data);
     this.setState({
-      tasks: tasks
-    })
-    
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+      tasks: tasks,
+    });
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));
     console.log("TaskForm: " + JSON.stringify(data));
   };
 
@@ -57,6 +57,16 @@ class App extends Component {
     this.setState({
       tasks: tasks,
     });
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  };
+
+  onChangeStatus = (id) => {
+    let { tasks } = this.state;
+    let index = tasks.findIndex((task) => task.id === id);
+    if (index || index === 0) {
+      tasks[index].status = !tasks[index].status;
+    }
+    this.setState({ tasks: tasks });
     localStorage.setItem("tasks", JSON.stringify(tasks));
   };
 
@@ -113,7 +123,7 @@ class App extends Component {
               <Control />
             </div>
 
-            <TaskList tasks={tasks} />
+            <TaskList tasks={tasks} onChangeStatus={this.onChangeStatus} />
           </div>
         </div>
       </div>

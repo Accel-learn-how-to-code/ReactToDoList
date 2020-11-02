@@ -5,9 +5,16 @@ import TaskItem from "./TaskItem";
 
 export default class TaskList extends Component {
   render() {
-    const { tasks } = this.props;
+    const { tasks, onChangeStatus } = this.props;
     const taskList = tasks.map((task, index) => {
-      return <TaskItem task={task} key={task.id} index={index} />;
+      return (
+        <TaskItem
+          onChangeStatus={onChangeStatus}
+          task={task}
+          key={task.id}
+          index={index}
+        />
+      );
     });
 
     return (
