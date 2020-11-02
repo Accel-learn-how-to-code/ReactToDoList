@@ -12,13 +12,12 @@ function ActiveTask() {
 function UnActiveTask() {
   return (
     <Badge className="d-flex justify-content-center p-1" color="danger">
-      Chưa kích hoạt
+      Ẩn
     </Badge>
   );
 }
 
 export default function TaskItem({ task, index }) {
-  console.log("Trang thai " + task.status);
   return (
     <tr>
       <td>{index + 1}</td>

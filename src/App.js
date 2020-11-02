@@ -11,18 +11,30 @@ class App extends Component {
     super(props);
     this.state = {
       tasks: [],
-      dcm: "",
+      isDisplayForm: false,
     };
   }
 
   componentDidMount() {
     if (localStorage && localStorage.getItem("tasks")) {
-      var tasks = JSON.parse( localStorage.getItem("tasks"));
+      var tasks = JSON.parse(localStorage.getItem("tasks"));
       this.setState({
-        tasks: tasks
+        tasks: tasks,
       });
     }
   }
+
+  onSubmitTask = (data) => {
+    data.id = this.generateID();
+    const {tasks} = this.state;
+    tasks.push(data);
+    this.setState({
+      tasks: tasks
+    })
+    
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    console.log("TaskForm: " + JSON.stringify(data));
+  };
 
   onGenerateData = () => {
     const tasks = [
@@ -42,6 +54,9 @@ class App extends Component {
         status: true,
       },
     ];
+    this.setState({
+      tasks: tasks,
+    });
     localStorage.setItem("tasks", JSON.stringify(tasks));
   };
 
@@ -55,19 +70,36 @@ class App extends Component {
     return this.s4() + this.s4();
   };
 
+  onToggleForm = () => {
+    this.setState({
+      isDisplayForm: !this.state.isDisplayForm,
+    });
+  };
+
   render() {
-    const tasks = this.state.tasks;
+    const { tasks, isDisplayForm } = this.state;
     return (
       <div className="container mt-3">
         <h1 className="d-flex justify-content-center my-5">To Do List</h1>
         <hr />
         <div className="row">
-          <div className="col-4">
-            <TaskForm />
+          <div className={isDisplayForm ? "col-4" : ""}>
+            {isDisplayForm ? (
+              <TaskForm
+                onSubmitTask={this.onSubmitTask}
+                onToggleForm={this.onToggleForm}
+              />
+            ) : (
+              ""
+            )}
           </div>
 
-          <div className="col-8">
-            <button type="button" className="btn btn-primary mx-1 mb-2">
+          <div className={isDisplayForm ? "col-8" : "col-12"}>
+            <button
+              type="button"
+              className="btn btn-primary mx-1 mb-2"
+              onClick={this.onToggleForm}
+            >
               Thêm công việc
             </button>
             <button
@@ -82,7 +114,6 @@ class App extends Component {
             </div>
 
             <TaskList tasks={tasks} />
-
           </div>
         </div>
       </div>
