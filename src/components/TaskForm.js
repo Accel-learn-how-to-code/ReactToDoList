@@ -24,11 +24,11 @@ class TaskForm extends Component {
 
   onSubmitTask = (event) => {
     event.preventDefault();
+    this.props.onSubmitTask(this.state);
     this.setState({
       name: "",
       status: false,
     });
-    this.props.onSubmitTask(this.state);
   };
 
   render() {
@@ -69,7 +69,9 @@ class TaskForm extends Component {
           </FormGroup>
           <ButtonGroup className="d-flex justify-content-center" size="sm">
             <Button color="warning">Save</Button>
-            <Button color="danger ml-1">Cancel</Button>
+            <Button color="danger ml-1" onClick={this.props.onToggleForm}>
+              Cancel
+            </Button>
           </ButtonGroup>
         </Form>
       </>
