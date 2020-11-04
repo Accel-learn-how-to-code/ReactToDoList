@@ -6,7 +6,7 @@ export default class TaskItem extends Component {
     console.log("Id: " + id);
   };
   render() {
-    const { task, index, onChangeStatus } = this.props;
+    const { task, index, onChangeStatus, onDeleteTask } = this.props;
     return (
       <>
         <tr>
@@ -34,7 +34,12 @@ export default class TaskItem extends Component {
           <td>
             <ButtonGroup className="d-flex justify-content-center" size="sm">
               <Button color="warning">Sửa</Button>
-              <Button color="danger ml-D1">Xóa</Button>
+              <Button
+                color="danger ml-D1"
+                onClick={() => onDeleteTask(task.id)}
+              >
+                Xóa
+              </Button>
             </ButtonGroup>
           </td>
         </tr>

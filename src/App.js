@@ -70,6 +70,16 @@ class App extends Component {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   };
 
+  onDeleteTask = (id) => {
+    let { tasks } = this.state;
+    let index = tasks.findIndex((task) => task.id === id);
+    if (index || index === 0) {
+      tasks.splice(index, 1);
+    }
+    this.setState({ tasks: tasks });
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  };
+
   s4 = () => {
     return Math.floor((1 + Math.random()) * 0x10000)
       .toString(16)
@@ -123,7 +133,11 @@ class App extends Component {
               <Control />
             </div>
 
-            <TaskList tasks={tasks} onChangeStatus={this.onChangeStatus} />
+            <TaskList
+              tasks={tasks}
+              onChangeStatus={this.onChangeStatus}
+              onDeleteTask={this.onDeleteTask}
+            />
           </div>
         </div>
       </div>

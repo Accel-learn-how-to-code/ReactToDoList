@@ -5,11 +5,12 @@ import TaskItem from "./TaskItem";
 
 export default class TaskList extends Component {
   render() {
-    const { tasks, onChangeStatus } = this.props;
+    const { tasks, onChangeStatus, onDeleteTask } = this.props;
     const taskList = tasks.map((task, index) => {
       return (
         <TaskItem
           onChangeStatus={onChangeStatus}
+          onDeleteTask={onDeleteTask}
           task={task}
           key={task.id}
           index={index}
