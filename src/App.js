@@ -12,6 +12,7 @@ class App extends Component {
     this.state = {
       tasks: [],
       isDisplayForm: false,
+      taskEditing: null,
     };
   }
 
@@ -23,18 +24,6 @@ class App extends Component {
       });
     }
   }
-
-  onSubmitTask = (data) => {
-    data.id = this.generateID();
-    const { tasks } = this.state;
-    tasks.push(data);
-    this.setState({
-      tasks: tasks,
-    });
-
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    console.log("TaskForm: " + JSON.stringify(data));
-  };
 
   onGenerateData = () => {
     const tasks = [
@@ -58,6 +47,33 @@ class App extends Component {
       tasks: tasks,
     });
     localStorage.setItem("tasks", JSON.stringify(tasks));
+  };
+
+  onSubmitTask = (data) => {
+    const { tasks } = this.state;
+    if (data.id !== null) {
+      let index = tasks.findIndex((task) => task.id === data.id);
+      data.status = data.status === "true" ? true : false;
+      tasks[index] = data;
+    } else {
+      data.id = this.generateID();
+      tasks.push(data);
+    }
+    this.setState({
+      tasks: tasks,
+      taskEditing: null,
+    });
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  };
+
+  onEditTask = (id) => {
+    let { tasks } = this.state;
+    let index = tasks.findIndex((task) => task.id === id);
+    this.setState({
+      taskEditing: tasks[index],
+      isDisplayForm: true,
+    });
   };
 
   onChangeStatus = (id) => {
@@ -96,8 +112,15 @@ class App extends Component {
     });
   };
 
+  onCloseForm = () => {
+    this.setState({
+      isDisplayForm: false,
+      taskEditing: null,
+    });
+  };
+
   render() {
-    const { tasks, isDisplayForm } = this.state;
+    const { tasks, isDisplayForm, taskEditing } = this.state;
     return (
       <div className="container mt-3">
         <h1 className="d-flex justify-content-center my-5">To Do List</h1>
@@ -108,6 +131,8 @@ class App extends Component {
               <TaskForm
                 onSubmitTask={this.onSubmitTask}
                 onToggleForm={this.onToggleForm}
+                onCloseForm={this.onCloseForm}
+                taskEditing={taskEditing}
               />
             ) : (
               ""
@@ -137,6 +162,7 @@ class App extends Component {
               tasks={tasks}
               onChangeStatus={this.onChangeStatus}
               onDeleteTask={this.onDeleteTask}
+              onEditTask={this.onEditTask}
             />
           </div>
         </div>
