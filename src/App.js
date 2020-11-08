@@ -74,7 +74,6 @@ class App extends Component {
       taskEditing: tasks[index],
       isDisplayForm: true,
     });
-    //console.log("Task is Press: " + JSON.stringify(tasks[index]));
   };
 
   onChangeStatus = (id) => {
@@ -108,9 +107,17 @@ class App extends Component {
   };
 
   onToggleForm = () => {
-    this.setState({
-      isDisplayForm: !this.state.isDisplayForm,
-    });
+    const { isDisplayForm, taskEditing } = this.state;
+    if (isDisplayForm && taskEditing) {
+      this.setState({
+        taskEditing: null,
+      });
+    } else {
+      this.setState({
+        isDisplayForm: !this.state.isDisplayForm,
+        taskEditing: null,
+      });
+    }
   };
 
   onCloseForm = () => {

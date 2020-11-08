@@ -11,6 +11,7 @@ class TaskForm extends Component {
       id: "",
       name: "",
       status: false,
+      count: 1,
     };
   }
 
@@ -31,14 +32,23 @@ class TaskForm extends Component {
   //componentDidUpdate sẽ so sánh 2 props prev và after
   //nếu khác thì nhận thằng props mới vào và set State
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.taskEditing !== this.props.taskEditing) {
-      //Set State cho prop mới
-      this.setState({
-        id: this.props.taskEditing.id,
-        name: this.props.taskEditing.name,
-        status: this.props.taskEditing.status,
-      });
-    }
+    const { taskEditing } = this.props;
+    
+    //chỉ được setState trong hàm if này, nếu ko sẽ trigger lỗi MaximumDepth
+    if (prevProps.taskEditing !== taskEditing)
+      if (taskEditing) {
+        this.setState({
+          id: taskEditing.id,
+          name: taskEditing.name,
+          status: taskEditing.status,
+        });
+      } else {
+        this.setState({
+          id: "",
+          name: "",
+          status: false,
+        });
+      }
   }
 
   onChangeData = (event) => {
