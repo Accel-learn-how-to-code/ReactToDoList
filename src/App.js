@@ -51,7 +51,7 @@ class App extends Component {
 
   onSubmitTask = (data) => {
     const { tasks } = this.state;
-    if (data.id !== null) {
+    if (data.id) {
       let index = tasks.findIndex((task) => task.id === data.id);
       data.status = data.status === "true" ? true : false;
       tasks[index] = data;
@@ -74,6 +74,7 @@ class App extends Component {
       taskEditing: tasks[index],
       isDisplayForm: true,
     });
+    //console.log("Task is Press: " + JSON.stringify(tasks[index]));
   };
 
   onChangeStatus = (id) => {

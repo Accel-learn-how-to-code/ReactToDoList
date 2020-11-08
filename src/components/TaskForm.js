@@ -26,6 +26,21 @@ class TaskForm extends Component {
     }
   }
 
+  //componentDidUpdate nhận vào 2 tham số prevProps, prevState
+  //trong hàm dưới đây khi App truyền vào 1 props taskEditing mới
+  //componentDidUpdate sẽ so sánh 2 props prev và after
+  //nếu khác thì nhận thằng props mới vào và set State
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.taskEditing !== this.props.taskEditing) {
+      //Set State cho prop mới
+      this.setState({
+        id: this.props.taskEditing.id,
+        name: this.props.taskEditing.name,
+        status: this.props.taskEditing.status,
+      });
+    }
+  }
+
   onChangeData = (event) => {
     let taskEvent = event.target;
     let name = taskEvent.name;
@@ -39,7 +54,7 @@ class TaskForm extends Component {
     event.preventDefault();
     this.props.onSubmitTask(this.state);
     this.setState({
-      id: '',
+      id: "",
       name: "",
       status: false,
     });
@@ -47,15 +62,13 @@ class TaskForm extends Component {
   };
 
   render() {
-    const { taskEditing } = this.props;
+    const { id } = this.state;
     return (
       <>
         <Form onSubmit={this.onSubmitTask}>
           <FormGroup>
             <div className="d-flex justify-content-between align-items-center mb-2 p-2 pr-3 badgeForm">
-              <span>
-                {taskEditing ? "Cập nhập công việc" : "Thêm công việc"}
-              </span>
+              <span>{id ? "Cập nhập công việc" : "Thêm công việc"}</span>
               <FontAwesomeIcon
                 icon={faTimes}
                 cursor="pointer"
