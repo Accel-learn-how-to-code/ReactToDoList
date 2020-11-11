@@ -33,7 +33,7 @@ class TaskForm extends Component {
   //nếu khác thì nhận thằng props mới vào và set State
   componentDidUpdate(prevProps, prevState) {
     const { taskEditing } = this.props;
-    
+
     //chỉ được setState trong hàm if này, nếu ko sẽ trigger lỗi MaximumDepth
     if (prevProps.taskEditing !== taskEditing)
       if (taskEditing) {
@@ -49,6 +49,7 @@ class TaskForm extends Component {
           status: false,
         });
       }
+
   }
 
   onChangeData = (event) => {

@@ -4,7 +4,32 @@ import { Input } from "reactstrap";
 import TaskItem from "./TaskItem";
 
 export default class TaskList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filterName: "",
+      //-1 All
+      //1 Active
+      //0 InActive
+      filterStatus: -1,
+    };
+  }
+  onFilter = (event) => {
+    let target = event.target;
+    let name = target.name;
+    let value = target.value;
+    const { filterName, filterStatus } = this.state;
+    this.props.onFilter(
+      name === "filterName" ? value : filterName,
+      name === "filterStatus" ? value : filterStatus
+    );
+    this.setState({
+      [name]: value,
+    });
+  };
+
   render() {
+    const { filterName, filterStatus } = this.state;
     const { tasks, onChangeStatus, onDeleteTask, onEditTask } = this.props;
     const taskList = tasks.map((task, index) => {
       return (
@@ -33,14 +58,22 @@ export default class TaskList extends Component {
           <tr>
             <td></td>
             <td>
-              <Input />
+              <Input
+                name="filterName"
+                value={filterName}
+                onChange={this.onFilter}
+              />
             </td>
             <td>
-              <select className="custom-select">
-                <option value="0">Sắp xếp</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+              <select
+                name="filterStatus"
+                className="custom-select"
+                onChange={this.onFilter}
+                value={filterStatus}
+              >
+                <option value={-1}>Toàn bộ</option>
+                <option value={1}>Kích Hoạt</option>
+                <option value={0}>Ẩn</option>
               </select>
             </td>
             <td></td>

@@ -13,6 +13,7 @@ class App extends Component {
       tasks: [],
       isDisplayForm: false,
       taskEditing: null,
+      filter: {},
     };
   }
 
@@ -127,8 +128,31 @@ class App extends Component {
     });
   };
 
+  onFilter = (filterName, filterStatus) => {
+    filterStatus = Number(filterStatus);
+    this.setState({
+      filter: {
+        name: filterName.toLowerCase(),
+        status: filterStatus,
+      },
+    });
+  };
+
   render() {
-    const { tasks, isDisplayForm, taskEditing } = this.state;
+    let { tasks, isDisplayForm, taskEditing, filter } = this.state;
+    console.log("hie " + filter.status);
+    if (filter.name) {
+      tasks = tasks.filter(
+        (task) => task.name.toLowerCase().indexOf(filter.name) !== -1
+      );
+    }
+    if (filter.status || filter.status === 0)
+      tasks =
+        filter.status === -1
+          ? tasks
+          : (tasks = tasks.filter((task) => {
+              return task.status === (filter.status === 1 ? true : false);
+            }));
     return (
       <div className="container mt-3">
         <h1 className="d-flex justify-content-center my-5">To Do List</h1>
@@ -171,6 +195,7 @@ class App extends Component {
               onChangeStatus={this.onChangeStatus}
               onDeleteTask={this.onDeleteTask}
               onEditTask={this.onEditTask}
+              onFilter={this.onFilter}
             />
           </div>
         </div>
