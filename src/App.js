@@ -15,6 +15,8 @@ class App extends Component {
       taskEditing: null,
       filter: {},
       searchKeyWord: "",
+      sortBy: "name",
+      sortValue: 1,
     };
   }
 
@@ -145,8 +147,22 @@ class App extends Component {
     });
   };
 
+  onSort = (sortName, sortValue) => {
+    this.setState({ sortBy: sortName, sortValue: sortValue });
+  };
+
   render() {
-    let { tasks, isDisplayForm, taskEditing, filter, searchKeyWord } = this.state;
+    let {
+      tasks,
+      isDisplayForm,
+      taskEditing,
+      filter,
+      searchKeyWord,
+      sortBy,
+      sortValue,
+    } = this.state;
+
+    console.log("Sort: " + sortBy + ' - ' + sortValue)
 
     if (filter.name) {
       tasks = tasks.filter(
@@ -154,7 +170,7 @@ class App extends Component {
       );
     }
 
-    if (filter.status || filter.status === 0){
+    if (filter.status || filter.status === 0) {
       tasks =
         filter.status === -1
           ? tasks
@@ -163,12 +179,26 @@ class App extends Component {
             }));
     }
 
-    if(searchKeyWord){
+    if (searchKeyWord) {
       tasks = tasks.filter(
         (task) => task.name.toLowerCase().indexOf(searchKeyWord) !== -1
       );
     }
-    
+
+    if (sortBy === 'name') {
+      tasks = tasks.sort((a, b) => {
+        if (a.name > b.name) return sortValue;
+        else if (a.name < b.name) return -sortValue;
+        else return 0;
+      });
+    } else if (sortBy === "status") {
+      tasks = tasks.sort((a, b) => {
+        if (a.status > b.status) return -sortValue;
+        else if (a.status < b.status) return sortValue;
+        else return 0;
+      });
+    }
+
     return (
       <div className="container mt-3">
         <h1 className="d-flex justify-content-center my-5">To Do List</h1>
@@ -203,7 +233,10 @@ class App extends Component {
               Generate
             </button>
             <div className="row mx-1 mb-2">
-              <Control searchKeyword={this.searchKeyword} />
+              <Control
+                searchKeyword={this.searchKeyword}
+                onSort={this.onSort}
+              />
             </div>
 
             <TaskList

@@ -3,7 +3,6 @@ import { InputGroup, InputGroupAddon, Button, Input } from "reactstrap";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { render } from "@testing-library/react";
 
 export default class Search extends Component {
   constructor(props) {
