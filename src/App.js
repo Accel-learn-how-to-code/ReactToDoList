@@ -14,6 +14,7 @@ class App extends Component {
       isDisplayForm: false,
       taskEditing: null,
       filter: {},
+      searchKeyWord: "",
     };
   }
 
@@ -138,21 +139,36 @@ class App extends Component {
     });
   };
 
+  searchKeyword = (keyword) => {
+    this.setState({
+      searchKeyWord: keyword,
+    });
+  };
+
   render() {
-    let { tasks, isDisplayForm, taskEditing, filter } = this.state;
-    console.log("hie " + filter.status);
+    let { tasks, isDisplayForm, taskEditing, filter, searchKeyWord } = this.state;
+
     if (filter.name) {
       tasks = tasks.filter(
         (task) => task.name.toLowerCase().indexOf(filter.name) !== -1
       );
     }
-    if (filter.status || filter.status === 0)
+
+    if (filter.status || filter.status === 0){
       tasks =
         filter.status === -1
           ? tasks
           : (tasks = tasks.filter((task) => {
               return task.status === (filter.status === 1 ? true : false);
             }));
+    }
+
+    if(searchKeyWord){
+      tasks = tasks.filter(
+        (task) => task.name.toLowerCase().indexOf(searchKeyWord) !== -1
+      );
+    }
+    
     return (
       <div className="container mt-3">
         <h1 className="d-flex justify-content-center my-5">To Do List</h1>
@@ -187,7 +203,7 @@ class App extends Component {
               Generate
             </button>
             <div className="row mx-1 mb-2">
-              <Control />
+              <Control searchKeyword={this.searchKeyword} />
             </div>
 
             <TaskList
